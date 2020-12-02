@@ -15,9 +15,10 @@ namespace CalculatorApp
             _Parser = new CalculationParser();
         }
 
-        public string InputCalculation(string calculation)
+
+        public string InputCalculation(List<string> parsedCalculation)
         {
-            _ParsedCalculation = _Parser.Parse(calculation);
+            _ParsedCalculation = parsedCalculation;
 
             try
             {
@@ -25,16 +26,22 @@ namespace CalculatorApp
             }
             catch (ArgumentException e)
             {
-                return "Erreur*" + Environment.NewLine + e.Message;
+                return "Erreur*";
             }
 
             return _ParsedCalculation.FirstOrDefault();
+        }
+        public string InputCalculation(string calculation)
+        {
+            var parsedCalculation = _Parser.Parse(calculation);
+
+            return InputCalculation(parsedCalculation);
         }
 
         private void Calculate()
         {
             CalculationByPriority("(");
-            CalculationByPriority("sqrt(", "*", "/", "^");
+            CalculationByPriority("sqrt", "*", "/", "^");
             CalculationByPriority("+", "-");
         }
 
@@ -49,32 +56,56 @@ namespace CalculatorApp
             {
                 int index = _ParsedCalculation.IndexOf(item);
 
-                var previousValue = _Parser.ValidateNumber(_ParsedCalculation[index - 1]);
-                var nextValue = _Parser.ValidateNumber(_ParsedCalculation[index + 1]);
-
-                switch (item)
+                if (item == "(")
                 {
-                    case "+":
-                        _ParsedCalculation[index] = Add(previousValue, nextValue).ToString();
-                        break;
-                    case "-":
-                        _ParsedCalculation[index] = Substract(previousValue, nextValue).ToString();
-                        break;
-                    case "*":
-                        _ParsedCalculation[index] = Multiply(previousValue, nextValue).ToString();
-                        break;
-                    case "/":
-                        _ParsedCalculation[index] = Divide(previousValue, nextValue).ToString();
-                        break;
-                    case "^":
-                        _ParsedCalculation[index] = Exponent(previousValue, nextValue).ToString();
-                        break;
-                    default:
-                        break;
+                    //Get the closing parenthesis
+                    var closingIndex = _ParsedCalculation.IndexOf(")", index);
+                    //Then get everything in between the parenthesis, create a new calculator to calculate the result and put it back in the calculation
+                    _ParsedCalculation[index] = new Calculator().InputCalculation(_ParsedCalculation.GetRange(index + 1, closingIndex - index -1));
+                    //Remove what has been calculated
+                    _ParsedCalculation.RemoveRange(index + 1, closingIndex - index);
                 }
+                else
+                {
+                    double nextValue = _Parser.ValidateNumber(_ParsedCalculation[index + 1]);
+                    double previousValue = 0;
 
-                _ParsedCalculation.RemoveAt(index + 1);
-                _ParsedCalculation.RemoveAt(index - 1);
+                    if (item != "sqrt")
+                    {
+                        previousValue = _Parser.ValidateNumber(_ParsedCalculation[index - 1]);
+                    }   
+
+                    switch (item)
+                    {
+                        case "+":
+                            _ParsedCalculation[index] = Add(previousValue, nextValue).ToString();
+                            break;
+                        case "-":
+                            _ParsedCalculation[index] = Substract(previousValue, nextValue).ToString();
+                            break;
+                        case "*":
+                            _ParsedCalculation[index] = Multiply(previousValue, nextValue).ToString();
+                            break;
+                        case "/":
+                            _ParsedCalculation[index] = Divide(previousValue, nextValue).ToString();
+                            break;
+                        case "^":
+                            _ParsedCalculation[index] = Exponent(previousValue, nextValue).ToString();
+                            break;
+                        case "sqrt":
+                            _ParsedCalculation[index] = Square(nextValue).ToString();
+                            break;
+                        default:
+                            break;
+                    }
+
+                    _ParsedCalculation.RemoveAt(index + 1);
+
+                    if (item != "sqrt")
+                    {
+                        _ParsedCalculation.RemoveAt(index - 1);
+                    }
+                }
 
                 item = _ParsedCalculation.FirstOrDefault(c => priorityList.Contains(c));
             }
@@ -117,6 +148,7 @@ namespace CalculatorApp
         /// <returns></returns>
         private double Multiply(double firstNumber, double secondNumber)
         {
+            //return Convert.ToDouble(Convert.ToDecimal(firstNumber) * Convert.ToDecimal(secondNumber));
             return firstNumber * secondNumber;
         }
 
@@ -130,7 +162,7 @@ namespace CalculatorApp
         {
             if (secondNumber == 0)
                 throw new ArgumentException("Division by zero is impossible");
-            return firstNumber * secondNumber;
+            return firstNumber / secondNumber;
         }
 
         /// <summary>
