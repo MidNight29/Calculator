@@ -10,7 +10,7 @@ namespace CalculatorApp
 
             while (1 == 1)
             {
-                var result = calc.InputCalculation(Console.ReadLine());
+                var result = calc.CalculateResult(Console.ReadLine());
                 Console.WriteLine(result);
                 Console.WriteLine();
             }

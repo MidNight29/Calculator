@@ -16,19 +16,36 @@ namespace CalculatorApp
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .ToList();
 
+            splittedCalculation = ParseNegativesAndParathesis(splittedCalculation);
+
+            return splittedCalculation;
+        }
+
+        /// <summary>
+        /// This function makes sure that negative numbers have their "-" sign with them
+        /// and that the parenthesis have their "*" in front of them if needed
+        /// </summary>
+        /// <param name="splittedCalculation"></param>
+        /// <returns></returns>
+        public List<string> ParseNegativesAndParathesis(List<string> splittedCalculation)
+        {
             List<int> indexToBeRemoved = new List<int>();
 
-            
             for (int i = 0; i < splittedCalculation.Count; i++)
             {
                 //For each "-" signs
                 if (splittedCalculation[i] == "-")
                 {
-                    //If it's the first character, it means the number is a negative
+                    var valueAfter = splittedCalculation[i + 1];
+
+                    //If it's the first character and the next character is a number, it means the number is a negative
                     if (i == 0)
                     {
-                        splittedCalculation[i + 1] = "-" + splittedCalculation[i + 1];
-                        indexToBeRemoved.Add(i);
+                        if (decimal.TryParse(valueAfter, out _))
+                        {
+                            splittedCalculation[i] = "-1";
+                            splittedCalculation.Insert(i + 1, "*");
+                        }
                     }
                     else
                     {
@@ -36,10 +53,10 @@ namespace CalculatorApp
                         var valueBefore = splittedCalculation[i - 1];
 
                         //If it's not a number, it means the value is negative
-                        if (!double.TryParse(valueBefore, out _))
+                        if (!decimal.TryParse(valueBefore, out _) && decimal.TryParse(valueAfter, out _))
                         {
-                            splittedCalculation[i + 1] = "-" + splittedCalculation[i + 1];
-                            indexToBeRemoved.Add(i);
+                            splittedCalculation[i] = "-1";
+                            splittedCalculation.Insert(i + 1, "*");
                         }
                     }
                 }
@@ -54,24 +71,24 @@ namespace CalculatorApp
                         var valueBefore = splittedCalculation[i - 1];
 
                         //If it's a number, add a "*" sign, this way it will multiply the result from the parenthesis to it
-                        if (double.TryParse(valueBefore, out _))
+                        if (decimal.TryParse(valueBefore, out _))
                         {
                             splittedCalculation.Insert(i, "*");
                         }
                     }
-                    
+
                 }
             }
 
             indexToBeRemoved = indexToBeRemoved.OrderByDescending(i => i).ToList();
-            indexToBeRemoved.ForEach(i => splittedCalculation.RemoveAt(i));            
+            indexToBeRemoved.ForEach(i => splittedCalculation.RemoveAt(i));
 
             return splittedCalculation;
         }
 
-        public double ValidateNumber(string number)
+        public decimal ValidateNumber(string number)
         {
-            if (!double.TryParse(number, out double parsedNumber))
+            if (!decimal.TryParse(number, out decimal parsedNumber))
             {
                 throw new ArgumentException(number + " is not a valid number");
             }

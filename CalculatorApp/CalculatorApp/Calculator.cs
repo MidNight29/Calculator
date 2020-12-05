@@ -16,35 +16,46 @@ namespace CalculatorApp
         }
 
 
-        public string InputCalculation(List<string> parsedCalculation)
+        public string CalculateResult(List<string> parsedCalculation)
         {
+            //Save the parsed calculation
             _ParsedCalculation = parsedCalculation;
 
             try
             {
-                Calculate();
+                //Do the actual calculation
+                ExecuteCalculation();
             }
-            catch (ArgumentException e)
+            catch (CalculationException e)
             {
+                //In case of an "expected" error, return "Erreur*"
                 return "Erreur*";
             }
 
+            //Return the result
             return _ParsedCalculation.FirstOrDefault();
         }
-        public string InputCalculation(string calculation)
+        public string CalculateResult(string calculation)
         {
+            //Parse the calculation
             var parsedCalculation = _Parser.Parse(calculation);
 
-            return InputCalculation(parsedCalculation);
+            return CalculateResult(parsedCalculation);
         }
 
-        private void Calculate()
+        private void ExecuteCalculation()
         {
+            //Run the calculation for each priority in the right order
             CalculationByPriority("(");
-            CalculationByPriority("sqrt", "*", "/", "^");
+            CalculationByPriority("^", "sqrt");
+            CalculationByPriority("*", "/");
             CalculationByPriority("+", "-");
         }
 
+        /// <summary>
+        /// This function is doing the calculation based on specified operators, left to right
+        /// </summary>
+        /// <param name="priority">List of operators for this priority</param>
         private void CalculationByPriority(params string[] priority)
         {
             var priorityList = priority.ToList();
@@ -56,49 +67,47 @@ namespace CalculatorApp
             {
                 int index = _ParsedCalculation.IndexOf(item);
 
-                if (item == "(")
-                {
-                    //Get the closing parenthesis
-                    var closingIndex = _ParsedCalculation.IndexOf(")", index);
-                    //Then get everything in between the parenthesis, create a new calculator to calculate the result and put it back in the calculation
-                    _ParsedCalculation[index] = new Calculator().InputCalculation(_ParsedCalculation.GetRange(index + 1, closingIndex - index -1));
-                    //Remove what has been calculated
-                    _ParsedCalculation.RemoveRange(index + 1, closingIndex - index);
-                }
-                else
-                {
-                    double nextValue = _Parser.ValidateNumber(_ParsedCalculation[index + 1]);
-                    double previousValue = 0;
+                decimal nextValue = 0;
+                decimal previousValue = 0;
 
+                if (item != "(")
+                {
+                    nextValue = _Parser.ValidateNumber(_ParsedCalculation[index + 1]);
                     if (item != "sqrt")
                     {
                         previousValue = _Parser.ValidateNumber(_ParsedCalculation[index - 1]);
-                    }   
-
-                    switch (item)
-                    {
-                        case "+":
-                            _ParsedCalculation[index] = Add(previousValue, nextValue).ToString();
-                            break;
-                        case "-":
-                            _ParsedCalculation[index] = Substract(previousValue, nextValue).ToString();
-                            break;
-                        case "*":
-                            _ParsedCalculation[index] = Multiply(previousValue, nextValue).ToString();
-                            break;
-                        case "/":
-                            _ParsedCalculation[index] = Divide(previousValue, nextValue).ToString();
-                            break;
-                        case "^":
-                            _ParsedCalculation[index] = Exponent(previousValue, nextValue).ToString();
-                            break;
-                        case "sqrt":
-                            _ParsedCalculation[index] = Square(nextValue).ToString();
-                            break;
-                        default:
-                            break;
                     }
+                }
 
+                switch (item)
+                {
+                    case "+":
+                        _ParsedCalculation[index] = Add(previousValue, nextValue).ToString();
+                        break;
+                    case "-":
+                        _ParsedCalculation[index] = Substract(previousValue, nextValue).ToString();
+                        break;
+                    case "*":
+                        _ParsedCalculation[index] = Multiply(previousValue, nextValue).ToString();
+                        break;
+                    case "/":
+                        _ParsedCalculation[index] = Divide(previousValue, nextValue).ToString();
+                        break;
+                    case "^":
+                        _ParsedCalculation[index] = Exponent(previousValue, nextValue).ToString();
+                        break;
+                    case "sqrt":
+                        _ParsedCalculation[index] = Square(nextValue).ToString();
+                        break;
+                    case "(":
+                        HandleParenthesis(index);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (item != "(")
+                {
                     _ParsedCalculation.RemoveAt(index + 1);
 
                     if (item != "sqrt")
@@ -107,8 +116,42 @@ namespace CalculatorApp
                     }
                 }
 
+                //Get the next operator for this priority
                 item = _ParsedCalculation.FirstOrDefault(c => priorityList.Contains(c));
             }
+        }
+
+        private void HandleParenthesis(int index)
+        {
+            int closingIndex = _ParsedCalculation.Count -1;
+            bool foundClosingIndex = false;
+
+            //Get the closing parenthesis, starting from the end to make sure we have the right one
+            while (!foundClosingIndex && closingIndex != -1)
+            {
+                if (_ParsedCalculation[closingIndex] == ")")
+                {
+                    foundClosingIndex = true;
+                }
+                else
+                {
+                    closingIndex = closingIndex - 1;
+                }
+
+                if (closingIndex == -1)
+                {
+                    throw new CalculationException("Missing closing parenthesis");
+                }
+            }
+
+            //Then get everything in between the parenthesis, create a new calculator to calculate the result and put it back in the calculation
+            _ParsedCalculation[index] = new Calculator().CalculateResult(_ParsedCalculation.GetRange(index + 1, closingIndex - index - 1));
+
+            //Remove what has been calculated
+            _ParsedCalculation.RemoveRange(index + 1, closingIndex - index);
+
+            //Make sure the negative signs and the parenthesis multiplications are updated
+            _ParsedCalculation = _Parser.ParseNegativesAndParathesis(_ParsedCalculation);
         }
 
         /// <summary>
@@ -117,16 +160,9 @@ namespace CalculatorApp
         /// <param name="firstNumber"></param>
         /// <param name="secondNumber"></param>
         /// <returns></returns>
-        private double Add(double firstNumber, double secondNumber)
+        private decimal Add(decimal firstNumber, decimal secondNumber)
         {
             return firstNumber + secondNumber;
-        }
-
-        
-
-        private double NumberValidation(string firstNumber)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -135,7 +171,7 @@ namespace CalculatorApp
         /// <param name="firstNumber"></param>
         /// <param name="secondNumber"></param>
         /// <returns></returns>
-        private double Substract(double firstNumber, double secondNumber)
+        private decimal Substract(decimal firstNumber, decimal secondNumber)
         {
             return firstNumber - secondNumber;
         }
@@ -146,9 +182,9 @@ namespace CalculatorApp
         /// <param name="firstNumber"></param>
         /// <param name="secondNumber"></param>
         /// <returns></returns>
-        private double Multiply(double firstNumber, double secondNumber)
+        private decimal Multiply(decimal firstNumber, decimal secondNumber)
         {
-            //return Convert.ToDouble(Convert.ToDecimal(firstNumber) * Convert.ToDecimal(secondNumber));
+            //return Convert.Todecimal(Convert.ToDecimal(firstNumber) * Convert.ToDecimal(secondNumber));
             return firstNumber * secondNumber;
         }
 
@@ -158,10 +194,10 @@ namespace CalculatorApp
         /// <param name="firstNumber"></param>
         /// <param name="secondNumber">This should not be 0 as division by 0 is impossible</param>
         /// <returns></returns>
-        private double Divide(double firstNumber, double secondNumber)
+        private decimal Divide(decimal firstNumber, decimal secondNumber)
         {
             if (secondNumber == 0)
-                throw new ArgumentException("Division by zero is impossible");
+                throw new CalculationException("Division by zero is impossible");
             return firstNumber / secondNumber;
         }
 
@@ -171,9 +207,9 @@ namespace CalculatorApp
         /// <param name="number"></param>
         /// <param name="exponent"></param>
         /// <returns></returns>
-        private double Exponent(double number, double exponent)
+        private decimal Exponent(decimal number, decimal exponent)
         {
-            return Math.Pow(number, exponent);
+            return (decimal)Math.Pow((double)number, (double)exponent);
         }
 
         /// <summary>
@@ -181,9 +217,13 @@ namespace CalculatorApp
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        private double Square(double number)
+        private decimal Square(decimal number)
         {
-            return Math.Sqrt(number);
+            if (number < 0)
+            {
+                throw new CalculationException("Cannot get the square root of a negative number");
+            }
+            return (decimal)Math.Sqrt((double)number);
         }
     }
 }
