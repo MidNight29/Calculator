@@ -10,6 +10,11 @@ namespace CalculatorLib
     {
         private Regex reg = new Regex(@"([+\-/*()^]|[sqrt]+|[0-9\.]+)");
         
+        /// <summary>
+        /// Parses the string into separate strings to differenciate numbers and operators
+        /// </summary>
+        /// <param name="calculation"></param>
+        /// <returns></returns>
         public List<string> Parse(string calculation)
         {
             var splittedCalculation = reg.Split(calculation)
@@ -86,11 +91,16 @@ namespace CalculatorLib
             return splittedCalculation;
         }
 
+        /// <summary>
+        /// Makes sure the string is a number
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public decimal ValidateNumber(string number)
         {
             if (!decimal.TryParse(number, out decimal parsedNumber))
             {
-                throw new ArgumentException(number + " is not a valid number");
+                throw new CalculationException(number + " is not a valid number");
             }
             return parsedNumber;
         }

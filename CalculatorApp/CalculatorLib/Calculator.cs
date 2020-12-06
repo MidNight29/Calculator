@@ -54,13 +54,14 @@ namespace CalculatorLib
         }
 
         /// <summary>
-        /// This function is doing the calculation based on specified operators, left to right
+        /// Executing the calculation based on specified operators, left to right
         /// </summary>
         /// <param name="priority">List of operators for this priority</param>
         private void CalculationByPriority(params string[] priority)
         {
             var priorityList = priority.ToList();
 
+            //Get the first operator within the current priority list
             var item = _ParsedCalculation.FirstOrDefault(c => priorityList.Contains(c));
 
             //Keep going as long as you have operators within the current priority list
@@ -71,6 +72,7 @@ namespace CalculatorLib
                 decimal nextValue = 0;
                 decimal previousValue = 0;
 
+                //Get the next and previous value, only if needed, depending on the operator
                 if (item != "(")
                 {
                     nextValue = _Parser.ValidateNumber(_ParsedCalculation[index + 1]);
@@ -107,6 +109,7 @@ namespace CalculatorLib
                         break;
                 }
 
+                //Remove sections that have been calculated, based on the operator
                 if (item != "(")
                 {
                     _ParsedCalculation.RemoveAt(index + 1);
@@ -128,9 +131,10 @@ namespace CalculatorLib
             bool foundClosingIndex = false;
             int closingIndex = index + 1;
 
-            //Get the next closing parenthesis, if there's an opening parenthesis, make sure you get it's closing too
+            //Get the correct closing parenthesis
             while (!foundClosingIndex)
             {
+                //If there's an opening parenthesis, increase the count so we find the right closing
                 if (_ParsedCalculation[closingIndex] == "(")
                 {
                     openingParenthesisFound++;
@@ -163,46 +167,22 @@ namespace CalculatorLib
             _ParsedCalculation = _Parser.ParseNegativesAndParathesis(_ParsedCalculation);
         }
 
-        /// <summary>
-        /// Adds the first number to the second one
-        /// </summary>
-        /// <param name="firstNumber"></param>
-        /// <param name="secondNumber"></param>
-        /// <returns></returns>
         private decimal Add(decimal firstNumber, decimal secondNumber)
         {
             return firstNumber + secondNumber;
         }
 
-        /// <summary>
-        /// Substract the second number from the first one
-        /// </summary>
-        /// <param name="firstNumber"></param>
-        /// <param name="secondNumber"></param>
-        /// <returns></returns>
         private decimal Substract(decimal firstNumber, decimal secondNumber)
         {
             return firstNumber - secondNumber;
         }
 
-        /// <summary>
-        /// Multiplies the first number by the second one
-        /// </summary>
-        /// <param name="firstNumber"></param>
-        /// <param name="secondNumber"></param>
-        /// <returns></returns>
         private decimal Multiply(decimal firstNumber, decimal secondNumber)
         {
             //return Convert.Todecimal(Convert.ToDecimal(firstNumber) * Convert.ToDecimal(secondNumber));
             return firstNumber * secondNumber;
         }
 
-        /// <summary>
-        /// Divides the first number by the second one
-        /// </summary>
-        /// <param name="firstNumber"></param>
-        /// <param name="secondNumber">This should not be 0 as division by 0 is impossible</param>
-        /// <returns></returns>
         private decimal Divide(decimal firstNumber, decimal secondNumber)
         {
             if (secondNumber == 0)
@@ -210,22 +190,11 @@ namespace CalculatorLib
             return firstNumber / secondNumber;
         }
 
-        /// <summary>
-        /// The number is raised to the power of the exponent
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="exponent"></param>
-        /// <returns></returns>
         private decimal Exponent(decimal number, decimal exponent)
         {
             return (decimal)Math.Pow((double)number, (double)exponent);
         }
 
-        /// <summary>
-        /// Square root of the specified number
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
         private decimal Square(decimal number)
         {
             if (number < 0)
