@@ -7,27 +7,51 @@
              mc:Ignorable="d"
              x:Class="CalculatorXamarinApp.MainPage">
 
-    <StackLayout Orientation="Vertical">
+    <StackLayout Orientation="Vertical" >
         <StackLayout.BindingContext>
             <local:MainPageViewModel />
         </StackLayout.BindingContext>
         <!-- Place new controls here -->
-        <Label Text="Welcome to the magic calculator!" 
+        <Label Text="Magic calculator!" 
+           HorizontalOptions="Fill"
+           VerticalOptions="Start"
+               FontSize="Title"
+               BackgroundColor="Black"
+               TextColor="White"
+               Padding="10"/>
+
+        <StackLayout Orientation="Vertical"
+                     HorizontalOptions="StartAndExpand"
+                     VerticalOptions="Center">
+            <Label Text="Enter your calculation:" 
+               TextColor="Black"
+               Margin="10,20,10,20"
+                   FontSize="Body"/>
+            <Entry Text="{Binding Calculation}" 
+           WidthRequest="500"
+           VerticalOptions="CenterAndExpand" 
+               Margin="10,0,10,20"/>
+        </StackLayout>
+        
+        
+        <Button Text="Calculate" Command="{Binding GetResultCommand}"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="End"
+                BackgroundColor="Black"
+                TextColor="White"
+                WidthRequest="500"
+                Margin="10,200,10,0"/>
+        <StackLayout Orientation="Horizontal" Margin="15">
+            <Label Text="Result:" 
            HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        <Label Text="Enter your calculation!" 
+           VerticalOptions="End"
+               TextColor="Black"/>
+            <Label Text="{Binding Result}" 
            HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        <Entry Text="{Binding Calculation}" 
-           HorizontalOptions="CenterAndExpand"
-           VerticalOptions="CenterAndExpand" />
-        <Button Text="Get Result" Command="{Binding GetResultCommand}"/>
-        <Label Text="Result:" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        <Label Text="{Binding Result}" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
+           VerticalOptions="End"
+               TextColor="Black"/>
+        </StackLayout>
+        
     </StackLayout>
 
 </ContentPage>

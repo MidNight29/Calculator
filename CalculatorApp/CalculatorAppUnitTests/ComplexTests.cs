@@ -67,5 +67,11 @@ namespace CalculatorAppUnitTests
             Assert.AreEqual("-16", _Calc.CalculateResult("(-2^4)"));
             Assert.AreEqual("16", _Calc.CalculateResult("((-2)^4)"));
         }
+
+        [TestMethod]
+        public void DoubleParenthesis()
+        {
+            Assert.AreEqual("12", _Calc.CalculateResult("((2+2)(2+1))"));
+        }
     }
 }
