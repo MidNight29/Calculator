@@ -124,24 +124,32 @@ namespace CalculatorLib
 
         private void HandleParenthesis(int index)
         {
-            int closingIndex = _ParsedCalculation.Count -1;
+            int openingParenthesisFound = 0;
             bool foundClosingIndex = false;
+            int closingIndex = index + 1;
 
-            //Get the closing parenthesis, starting from the end to make sure we have the right one
-            while (!foundClosingIndex && closingIndex != -1)
+            //Get the next closing parenthesis, if there's an opening parenthesis, make sure you get it's closing too
+            while (!foundClosingIndex)
             {
-                if (_ParsedCalculation[closingIndex] == ")")
+                if (_ParsedCalculation[closingIndex] == "(")
                 {
-                    foundClosingIndex = true;
+                    openingParenthesisFound++;
                 }
-                else
+                else if (_ParsedCalculation[closingIndex] == ")")
                 {
-                    closingIndex = closingIndex - 1;
+                    if (openingParenthesisFound > 0)
+                    {
+                        openingParenthesisFound--;
+                    }
+                    else
+                    {
+                        foundClosingIndex = true;
+                    }
                 }
 
-                if (closingIndex == -1)
+                if (!foundClosingIndex)
                 {
-                    throw new CalculationException("Missing closing parenthesis");
+                    closingIndex++;
                 }
             }
 
