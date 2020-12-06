@@ -1,6 +1,7 @@
-﻿using System;
+﻿using CalculatorLib;
+using System;
 
-namespace CalculatorApp
+namespace CalculatorConsoleApp
 {
     class Program
     {

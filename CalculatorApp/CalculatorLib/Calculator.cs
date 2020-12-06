@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CalculatorApp
+namespace CalculatorLib
 {
     public class Calculator
     {
@@ -32,9 +32,10 @@ namespace CalculatorApp
                 return "Erreur*";
             }
 
-            //Return the result
+            //Return the final result
             return _ParsedCalculation.FirstOrDefault();
         }
+
         public string CalculateResult(string calculation)
         {
             //Parse the calculation

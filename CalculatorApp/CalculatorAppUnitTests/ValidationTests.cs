@@ -1,4 +1,4 @@
-using CalculatorApp;
+using CalculatorLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CalculatorAppUnitTests

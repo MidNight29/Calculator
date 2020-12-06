@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CalculatorApp
+namespace CalculatorLib
 {
     public class CalculationParser
     {

@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorApp", "CalculatorApp\CalculatorApp.csproj", "{3FB11655-1F6E-43D8-A3B2-377F6B8C31BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorAppUnitTests", "CalculatorAppUnitTests\CalculatorAppUnitTests.csproj", "{08191A86-6B1E-493F-AEA8-BA97A6D6FD0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorAppUnitTests", "CalculatorAppUnitTests\CalculatorAppUnitTests.csproj", "{08191A86-6B1E-493F-AEA8-BA97A6D6FD0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorXamarinApp.Android", "CalculatorApp.Android\CalculatorApp.Android.Android\CalculatorXamarinApp.Android.csproj", "{66EA2EB4-3137-4306-A6E3-D39D77BB007D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorXamarinApp", "CalculatorApp.Android\CalculatorApp.Android\CalculatorXamarinApp.csproj", "{7BED098E-2FCD-448E-8F75-4FC7A8331E4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorLib", "CalculatorLib\CalculatorLib.csproj", "{DA2DB7C7-4D0B-49EC-B3F2-2D2C9D34B05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorConsoleApp", "CalculatorConsoleApp\CalculatorConsoleApp.csproj", "{EDED2379-CBA0-49B4-AAF2-53DD231572C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +19,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3FB11655-1F6E-43D8-A3B2-377F6B8C31BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FB11655-1F6E-43D8-A3B2-377F6B8C31BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FB11655-1F6E-43D8-A3B2-377F6B8C31BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FB11655-1F6E-43D8-A3B2-377F6B8C31BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08191A86-6B1E-493F-AEA8-BA97A6D6FD0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08191A86-6B1E-493F-AEA8-BA97A6D6FD0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08191A86-6B1E-493F-AEA8-BA97A6D6FD0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08191A86-6B1E-493F-AEA8-BA97A6D6FD0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66EA2EB4-3137-4306-A6E3-D39D77BB007D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66EA2EB4-3137-4306-A6E3-D39D77BB007D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66EA2EB4-3137-4306-A6E3-D39D77BB007D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{66EA2EB4-3137-4306-A6E3-D39D77BB007D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66EA2EB4-3137-4306-A6E3-D39D77BB007D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66EA2EB4-3137-4306-A6E3-D39D77BB007D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7BED098E-2FCD-448E-8F75-4FC7A8331E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BED098E-2FCD-448E-8F75-4FC7A8331E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BED098E-2FCD-448E-8F75-4FC7A8331E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BED098E-2FCD-448E-8F75-4FC7A8331E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA2DB7C7-4D0B-49EC-B3F2-2D2C9D34B05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA2DB7C7-4D0B-49EC-B3F2-2D2C9D34B05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA2DB7C7-4D0B-49EC-B3F2-2D2C9D34B05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA2DB7C7-4D0B-49EC-B3F2-2D2C9D34B05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
