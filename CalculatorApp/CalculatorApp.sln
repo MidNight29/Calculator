@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculatorLib", "Calculator
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorConsoleApp", "CalculatorConsoleApp\CalculatorConsoleApp.csproj", "{EDED2379-CBA0-49B4-AAF2-53DD231572C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorXamarinApp.Android", "CalculatorXamarinApp\CalculatorXamarinApp.Android\CalculatorXamarinApp.Android.csproj", "{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorXamarinApp", "CalculatorXamarinApp\CalculatorXamarinApp\CalculatorXamarinApp.csproj", "{3C951013-0D15-4CE9-A5D0-C5B369C05FBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,16 @@ Global
 		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDED2379-CBA0-49B4-AAF2-53DD231572C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93C6BF76-EA89-44F5-8CA7-BCC0927AB19F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3C951013-0D15-4CE9-A5D0-C5B369C05FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C951013-0D15-4CE9-A5D0-C5B369C05FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C951013-0D15-4CE9-A5D0-C5B369C05FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C951013-0D15-4CE9-A5D0-C5B369C05FBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
